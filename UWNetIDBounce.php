@@ -2,7 +2,7 @@
 
 $uwnetid;
 
-$properties = parse_ini_file("../../UWNetID.ini");
+$properties = parse_ini_file("../../config/UWNetID.ini");
 
 $accessToken = "";
 
