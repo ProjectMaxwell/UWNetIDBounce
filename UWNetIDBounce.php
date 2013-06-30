@@ -9,6 +9,7 @@ $accessToken = "";
 $jsonBody = '{"grantType":"CLIENT_CREDENTIALS",
 "clientId":"' . $properties['PhiAuthClientId'] . '",
 "clientSecret":"' . $properties['PhiAuthClientSecret'] . '"}';
+$allowMock = trim($properties['AllowUWNetIDMock']);
 
 $url = 'http://evergreenalumniclub.com:7080/PhiAuth/rest/token';
 $ch = curl_init($url);
@@ -29,6 +30,8 @@ $accessToken = $jsonResponse->accessToken;
 
 if($_ENV['REMOTE_USER'] == null){
 	echo "No uwnetid found.";
+}else if(strcasecmp($allowMock, "true") && $_POST['uwnetid'] != null){
+	$uwnetid = $_POST['uwnetid'];
 }else{
 	$uwnetid = $_ENV['REMOTE_USER'];
 }
