@@ -1,2 +1,5 @@
 .project
 .classpath
+.htaccess
+UWNetID.properties
+error_log

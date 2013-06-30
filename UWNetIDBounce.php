@@ -2,7 +2,7 @@
 
 $uwnetid;
 
-$properties = parse_ini_file("../../config/UWNetID.ini");
+$properties = parse_ini_file("UWNetID.properties");
 
 $accessToken = "";
 
@@ -27,10 +27,10 @@ $jsonResponse = json_decode($response);
 $accessToken = $jsonResponse->accessToken;
 
 
-if($_POST['uwnetid'] == null){
-	echo "do error stuff";
+if($_ENV['REMOTE_USER'] == null){
+	echo "No uwnetid found.";
 }else{
-	$uwnetid = $_POST['uwnetid'];
+	$uwnetid = $_ENV['REMOTE_USER'];
 }
 
 $jsonBody = '{"uwnetid":"' . $uwnetid . '"}';
@@ -47,8 +47,6 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, array(
     ));
 
 $response = curl_exec($ch);
-
-echo $response;
 
 curl_close($ch);
 
