@@ -29,7 +29,7 @@ $accessToken = $jsonResponse->accessToken;
 
 $ref = "";
 $queryParams = "";
-if(array_key_exists['redir', $_GET]){
+if(array_key_exists('redir', $_GET)){
 	$ref= urldecode($_GET['redir']);
 }else{
 	$ref=getenv("HTTP_REFERER");
