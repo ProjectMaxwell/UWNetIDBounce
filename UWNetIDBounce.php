@@ -27,9 +27,15 @@ curl_close($ch);
 $jsonResponse = json_decode($response);
 $accessToken = $jsonResponse->accessToken;
 
-$ref=getenv("HTTP_REFERER");
+$ref = "";
+$queryParams = "";
+if(array_key_exists['redir', $_GET]){
+	$ref= urldecode($_GET['redir']);
+}else{
+	$ref=getenv("HTTP_REFERER");
+}
 if($ref == null){
-	$ref = "http://www.evergreenalumniclub.com/UWNetIDTest/index.php";
+	$ref = "index.php";
 }else if(strpos($ref, "?") > 0){
 	$ref = substr($ref, 0, strpos($ref, "?"));
 }
