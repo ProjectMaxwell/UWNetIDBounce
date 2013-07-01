@@ -27,14 +27,22 @@ curl_close($ch);
 $jsonResponse = json_decode($response);
 $accessToken = $jsonResponse->accessToken;
 
-
-if($_ENV['REMOTE_USER'] == null){
-	echo "No uwnetid found.";
-}else if(strcasecmp($allowMock, "true") && $_POST['uwnetid'] != null){
-	$uwnetid = $_POST['uwnetid'];
-}else{
-	$uwnetid = $_ENV['REMOTE_USER'];
+$ref=getenv("HTTP_REFERER");
+if($ref == null){
+	$ref = "http://www.evergreenalumniclub.com/UWNetIDTest/index.php";
+}else if(strpos($ref, "?") > 0){
+	$ref = substr($ref, 0, strpos($ref, "?"));
 }
+
+if(strcasecmp($allowMock, "true") && array_key_exists('uwnetid', $_POST)){
+	$uwnetid = $_POST['uwnetid'];
+}else if(array_key_exists('REMOTE_USER', $_ENV)){
+	$uwnetid = $_ENV['REMOTE_USER'];
+}else{
+	$ref .= "?errorCode=UWNETID.NOT.DEFINED";
+	header("Location: " . $ref);
+}
+	
 
 $jsonBody = '{"uwnetid":"' . $uwnetid . '"}';
 
@@ -56,13 +64,6 @@ curl_close($ch);
 $jsonResponse = json_decode($response);
 
 $data;
-
-$ref=getenv("HTTP_REFERER");
-if($ref == null){
-	$ref = "http://www.evergreenalumniclub.com/UWNetIDTest/index.php";
-}else if(strpos($ref, "?") > 0){
-	$ref = substr($ref, 0, strpos($ref, "?"));
-}
 
 if(isset($jsonResponse->token)){
 
